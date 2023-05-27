@@ -10,10 +10,10 @@ export class UserStateService {
     const user = {
       id: 1,
       name: 'Sajitha HD',
-      // plan: 'Trail'
-      // plan: 'Starter'
-      plan: 'Pro'
-      // plan: 'Premium'
+      // plan: 'trail'
+      // plan: 'starter'
+      plan: 'pro'
+      // plan: 'premium'
       
     };
 
