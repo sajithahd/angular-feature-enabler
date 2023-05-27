@@ -3,38 +3,36 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserStateService } from './user-state.service';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FeatureEnablerService {
+  featurePlanMatrix: { [key: string]: Feature[] } = {
+    trail: [Feature.Feature1],
+    starter: [Feature.Feature1, Feature.Feature2],
+    pro: [Feature.Feature1, Feature.Feature2, Feature.Feature3],
+    premium: [
+      Feature.Feature1,
+      Feature.Feature2,
+      Feature.Feature3,
+      Feature.Feature4,
+    ],
+  };
 
-  plan!: string;
-
-  constructor(private userStateService: UserStateService) {
-  }
+  constructor(private userStateService: UserStateService) {}
 
   public isEligibleFeature$(feature: Feature): Observable<boolean> {
     return this.userStateService.getCurrentUser$().pipe(
-      map(user => {
-        const proPlans = ['Pro', 'Enterprise'];
-        this.plan = user.plan;
-
-        switch (feature) {
-          case Feature.Feature1:
-          case Feature.Feature2:
-          case Feature.Feature3:
-            return proPlans.includes(this.plan);
-          default:
-            return false;
-        }
+      map((user) => {
+        return this.featurePlanMatrix[user.plan].includes(feature);
       })
-    )
+    );
   }
 }
 
 export enum Feature {
   Feature1,
   Feature2,
-  Feature3
+  Feature3,
+  Feature4,
 }
