@@ -7,10 +7,20 @@ import { UserStateService } from './user-state.service';
   providedIn: 'root',
 })
 export class FeatureEnablerService {
+
+  // Ideally this matrix should be fetched from BE API as well. 
+  // As that sould be managed by BE business logic.
   featurePlanMatrix: { [key: string]: Feature[] } = {
-    trail: [Feature.Feature1],
-    starter: [Feature.Feature1, Feature.Feature2],
-    pro: [Feature.Feature1, Feature.Feature2, Feature.Feature3],
+    trail: [
+      Feature.Feature1
+    ],
+    starter: [
+      Feature.Feature1,
+      Feature.Feature2],
+    pro: [
+      Feature.Feature1,
+      Feature.Feature2,
+      Feature.Feature3],
     premium: [
       Feature.Feature1,
       Feature.Feature2,
@@ -19,11 +29,14 @@ export class FeatureEnablerService {
     ],
   };
 
-  constructor(private userStateService: UserStateService) {}
+  constructor(private userStateService: UserStateService) { }
 
   public isEligibleFeature$(feature: Feature): Observable<boolean> {
     return this.userStateService.getCurrentUser$().pipe(
       map((user) => {
+        if (!this.featurePlanMatrix[user.plan]) {
+          return false;
+        }
         return this.featurePlanMatrix[user.plan].includes(feature);
       })
     );
