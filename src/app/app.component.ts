@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Feature } from './feature-enabler.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  Feature = Feature;
   title = 'angular-feature-enabler';
 }
