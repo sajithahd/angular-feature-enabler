@@ -16,17 +16,19 @@ export class FeatureEnablerService {
     ],
     starter: [
       Feature.Feature1,
-      Feature.Feature2],
+      Feature.Feature2
+    ],
     pro: [
       Feature.Feature1,
       Feature.Feature2,
-      Feature.Feature3],
+      Feature.Feature3
+    ],
     premium: [
       Feature.Feature1,
       Feature.Feature2,
       Feature.Feature3,
       Feature.Feature4,
-    ],
+    ]
   };
 
   constructor(private userStateService: UserStateService) { }
