@@ -10,34 +10,69 @@ export class FeatureEnablerService {
 
   // Ideally this matrix should be fetched from BE API as well. 
   // As that sould be managed by BE business logic.
-  featurePlanMatrix: { [key: string]: Feature[] } = {
+  featurePlanMatrix: FeaturePlanMatrix = {
     trail: [
-      Feature.Feature1
+      {
+        feature: Feature.Feature1,
+        visibility: Visibility.Hide
+      }
     ],
     starter: [
-      Feature.Feature1,
-      Feature.Feature2],
+      {
+        feature: Feature.Feature1,
+        visibility: Visibility.Hide
+      },
+      {
+        feature: Feature.Feature2,
+        visibility: Visibility.Hide
+      }
+    ],
     pro: [
-      Feature.Feature1,
-      Feature.Feature2,
-      Feature.Feature3],
+      {
+        feature: Feature.Feature1,
+        visibility: Visibility.Hide
+      }, {
+        feature: Feature.Feature2,
+        visibility: Visibility.Hide
+      }, {
+        feature: Feature.Feature3,
+        visibility: Visibility.Hide
+      }
+    ],
     premium: [
-      Feature.Feature1,
-      Feature.Feature2,
-      Feature.Feature3,
-      Feature.Feature4,
+      {
+        feature: Feature.Feature1,
+        visibility: Visibility.Hide
+      }, {
+        feature: Feature.Feature2,
+        visibility: Visibility.Hide
+      }, {
+        feature: Feature.Feature3,
+        visibility: Visibility.Hide
+      }, {
+        feature: Feature.Feature4,
+        visibility: Visibility.Disable
+      }
     ],
   };
 
   constructor(private userStateService: UserStateService) { }
 
-  public isEligibleFeature$(feature: Feature): Observable<boolean> {
+  public isEligibleFeature$(feature: Feature): Observable<[boolean, Visibility]> {
     return this.userStateService.getCurrentUser$().pipe(
       map((user) => {
         if (!this.featurePlanMatrix[user.plan]) {
-          return false;
+          return ([false, Visibility.Hide]);
         }
-        return this.featurePlanMatrix[user.plan].includes(feature);
+
+        const featureObj : FeaturePlan | undefined = this.featurePlanMatrix[user.plan]
+         .find(item => item.feature === feature);
+        if(featureObj){ 
+          return ([true, featureObj.visibility]);
+        } else {
+          return ([false, Visibility.Hide])
+        }
+
       })
     );
   }
@@ -49,3 +84,18 @@ export enum Feature {
   Feature3,
   Feature4,
 }
+
+export enum Visibility {
+  Show,
+  Hide,
+  Disable
+}
+
+type FeaturePlan = {
+  feature: Feature;
+  visibility: Visibility;
+};
+
+type FeaturePlanMatrix = {
+  [key: string]: FeaturePlan[];
+};
