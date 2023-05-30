@@ -8,7 +8,7 @@ import { UserStateService } from './user-state.service';
 })
 export class FeatureEnablerService {
 
-  // Ideally this matrix should be fetched from BE API as well. 
+  // Ideally this matrix should be fetched from a Back End API as well. 
   // As that sould be managed by BE business logic.
   featurePlanMatrix: { [key: string]: Feature[] } = {
     trail: [
