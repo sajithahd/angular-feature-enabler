@@ -12,8 +12,8 @@ export class UserStateService {
       name: 'Sajitha HD',
       // plan: 'trail'
       // plan: 'starter'
-      plan: 'pro'
-      // plan: 'premium'
+      // plan: 'pro'
+      plan: 'premium'
       
     };
 
